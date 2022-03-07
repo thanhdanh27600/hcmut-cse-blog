@@ -3,10 +3,10 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import sanityClient from '@sanity/client'
 
 const config = {
-  dataset: process.env.NEXT_PUBLIC_SANITY_REACT,
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   useCdn: process.env.NODE_ENV === 'production',
-  token: process.env.SANITY_API_TOKEN,
+  token: process.env.NEXT_PUBLIC_SANITY_API_TOKEN,
 }
 
 const client = sanityClient(config)
@@ -27,7 +27,7 @@ export default async function createComment(
       comment,
       parent: {
         _type: 'reference',
-        _ref: parent,
+        _ref: parent || undefined,
       },
     })
   } catch (err) {

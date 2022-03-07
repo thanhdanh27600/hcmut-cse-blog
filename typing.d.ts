@@ -2,6 +2,7 @@ export interface Post {
   _id: string
   author: Author
   body: Body[]
+  comments: Comment[]
   description: string
   mainImage: MainImage
   slug: Slug
@@ -98,3 +99,22 @@ export interface User {
   familyName: string
 }
 
+export interface Comment {
+  _createdAt: Date
+  _id: string
+  _rev: string
+  _type: string
+  _updatedAt: Date
+  approved: boolean
+  comment: string
+  email: string
+  name: string
+  url: string
+  parent?: Parent
+  post: Parent
+}
+
+export interface Parent {
+  _ref: string
+  _type: string
+}

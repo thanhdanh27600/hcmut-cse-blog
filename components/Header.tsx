@@ -11,7 +11,13 @@ function Header({ setUser, user, error, setError }: any) {
     '788505629167-v648vgsorglc1gkcu109q5769fuab0rd.apps.googleusercontent.com'
 
   const onSuccess = (res: any) => {
-    setUser(res.profileObj)
+    const currentUser = res.profileObj as User
+    if (!currentUser.email.includes('@hcmut.edu.vn')) {
+      window.alert('Please use HCMUT email')
+      signOut()
+      return
+    }
+    setUser(currentUser)
     refreshTokenSetup(res)
   }
 
@@ -19,9 +25,9 @@ function Header({ setUser, user, error, setError }: any) {
     setError(res)
   }
   const onLogoutSuccess = () => {
-    setUser({} as User)
-    console.log('Logged out Success')
-    alert('Logged out Successfully ✌')
+    setUser()
+    // console.log('Logged out Success')
+    // alert('Logged out Successfully ✌')
   }
   const { signIn } = useGoogleLogin({
     onSuccess,

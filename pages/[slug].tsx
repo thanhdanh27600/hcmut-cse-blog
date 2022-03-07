@@ -1,5 +1,5 @@
 import { PortableText } from '@portabletext/react'
-import { getImageDimensions } from '@sanity/asset-utils'
+import { getImageDimensions, isObject } from '@sanity/asset-utils'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import React, { FormEvent, FormEventHandler, useState } from 'react'
@@ -44,10 +44,10 @@ const components = {
   },
   listItem: {
     bullet: ({ children }: any) => (
-      <li className="ml-4 list-disc">{children}</li>
+      <li className="ml-10 list-disc">{children}</li>
     ),
     number: ({ children }: any) => (
-      <li className="ml-4 list-decimal">{children}</li>
+      <li className="ml-10 list-decimal">{children}</li>
     ),
   },
   block: {
@@ -85,8 +85,8 @@ export default function PostPage({ post }: Props) {
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const comment = event.currentTarget.firstChild?.nodeValue
-    if (!comment) return
+    const comment = event.currentTarget.querySelector('textarea')?.value
+    if (!comment || !user) return
 
     const parent = null
 
@@ -122,8 +122,8 @@ export default function PostPage({ post }: Props) {
         alt={post.description}
       />
 
-      <article className="mx-auto my-10 max-w-3xl">
-        <h1 className="mt-10 mb-3 text-3xl">{post.title}</h1>
+      <article className="mx-auto my-10 max-w-3xl px-5">
+        <h1 className="mt-10 mb-3 text-4xl font-bold">{post.title}</h1>
         <h2 className="mb-2 text-xl font-light text-gray-500">
           {post.description}
         </h2>
@@ -196,14 +196,26 @@ export default function PostPage({ post }: Props) {
           <textarea
             className="form-input mt-1 block w-full rounded border py-2 px-3 shadow outline-none ring-sky-400 focus:ring"
             rows={8}
+            disabled={!isObject(user)}
+            placeholder={
+              isObject(user)
+                ? 'Enter your comment'
+                : 'Please log-in to continue'
+            }
           />
         </label>
         <input
           type="submit"
           className="cursor-pointer rounded bg-sky-500 py-2 px-4 font-bold text-white shadow hover:bg-sky-400 focus:shadow-sm focus:outline-none"
+          disabled={!isObject(user)}
         ></input>
       </form>
 
+      {post.comments.map((comment) => (
+        <div>
+          {comment.name} - {comment.comment}
+        </div>
+      ))}
       <Footer />
     </main>
   )
@@ -240,6 +252,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   name,
   image
 },
+'comments': *[
+  _type=="comment" && 
+  post._ref == ^._id &&
+  approved==true
+],
 mainImage,
 description,
 body,
