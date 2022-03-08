@@ -101,7 +101,7 @@ export default function PostPage({ post }: Props) {
       parent: parent,
     }
 
-    fetch('/api/createComment', {
+    fetch('http://localhost:5000/createComment', {
       method: 'POST',
       body: JSON.stringify(data),
     })
