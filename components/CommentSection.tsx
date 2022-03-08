@@ -38,7 +38,7 @@ export default function CommentSection(commentSection: CommentSection) {
         },
       })
       if (res) {
-        console.log(res)
+        // console.log(res)
         window.alert('Thành công. Câu trả lời sẽ được hiển thị sau khi duyệt')
       }
       // console.log(res)
@@ -50,8 +50,6 @@ export default function CommentSection(commentSection: CommentSection) {
 
   const handleReply: MouseEventHandler<HTMLButtonElement> = (event) => {
     const parentId = event.currentTarget.dataset.replybutton
-    console.log(parentId)
-
     const replyWrapper = document.createElement('div')
 
     const replyArea = document.createElement('textarea')

@@ -84,9 +84,7 @@ export default function PostPage({ post }: Props) {
   const [user, setUser] = useState<User>()
   const [error, setError] = useState<any>()
   const [loading, setLoading] = useState<boolean>(false)
-
-  console.log(post)
-
+  
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     event.currentTarget.reset()
