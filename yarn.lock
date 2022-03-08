@@ -757,6 +757,13 @@
   "resolved" "https://registry.npmjs.org/isobject/-/isobject-3.0.1.tgz"
   "version" "3.0.1"
 
+"javascript-time-ago@^2.3.13":
+  "integrity" "sha512-LiNqRLERXpePGLejdqjbxfMkFlwx+2RDz21Jfw/3l2mH20fTa6nAtwOFQmAK5l0SfaV7HvixJgTCxyph9VmG1Q=="
+  "resolved" "https://registry.npmjs.org/javascript-time-ago/-/javascript-time-ago-2.3.13.tgz"
+  "version" "2.3.13"
+  dependencies:
+    "relative-time-format" "^1.0.7"
+
 "js-tokens@^3.0.0 || ^4.0.0", "js-tokens@^4.0.0":
   "integrity" "sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ=="
   "resolved" "https://registry.npmjs.org/js-tokens/-/js-tokens-4.0.0.tgz"
@@ -1173,6 +1180,11 @@
   "integrity" "sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA=="
   "resolved" "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.13.9.tgz"
   "version" "0.13.9"
+
+"relative-time-format@^1.0.7":
+  "integrity" "sha512-BoLPaoL5y94ngPI4iJ9mNHqRS8NA+Hjs6oYHL5UYkbnA7/iTlvJiMoQQt8txhHhc+Y3e6yXWhwTAKvsQhnx2yg=="
+  "resolved" "https://registry.npmjs.org/relative-time-format/-/relative-time-format-1.0.7.tgz"
+  "version" "1.0.7"
 
 "requires-port@^1.0.0":
   "integrity" "sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8="

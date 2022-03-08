@@ -109,7 +109,7 @@ export interface Comment {
   comment: string
   email: string
   name: string
-  url: string
+  imageUrl: string
   parent?: Parent
   post: Parent
 }

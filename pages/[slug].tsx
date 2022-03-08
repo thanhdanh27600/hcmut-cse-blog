@@ -5,6 +5,7 @@ import Head from 'next/head'
 import React, { FormEvent, FormEventHandler, useState } from 'react'
 import SyntaxHighlighter from 'react-syntax-highlighter'
 import { atomOneDark } from 'react-syntax-highlighter/dist/cjs/styles/hljs'
+import CommentSection from '../components/CommentSection'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
 import { sanityClient, urlFor } from '../sanity'
@@ -85,14 +86,18 @@ export default function PostPage({ post }: Props) {
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const comment = event.currentTarget.querySelector('textarea')?.value
+    const comment = event.currentTarget.querySelector('.my-comment') as any
+
     if (!comment || !user) return
 
     const parent = null
 
     const data = {
       post: post._id,
-      comment: comment,
+      name: user.name,
+      email: user.email,
+      imageUrl: user.imageUrl,
+      comment: comment.value,
       parent: parent,
     }
 
@@ -101,7 +106,9 @@ export default function PostPage({ post }: Props) {
       body: JSON.stringify(data),
     })
       .then((res) => {
-        console.log(res)
+        window.alert('Thành công. Câu hỏi sẽ được hiển thị sau khi duyệt')
+        comment.value = ''
+        // console.log(res)
       })
       .catch((err) => {
         console.log(err)
@@ -138,7 +145,7 @@ export default function PostPage({ post }: Props) {
             Published at {new Date(post.publishedAt).toLocaleString()}
           </p>
         </div>
-        <div className="mt-10 mb-48">
+        <div className="mt-10 mb-10">
           {/* <PortableText
             className=""
             dataset={process.env.NEXT_PUBLIC_SANITY_DATASET}
@@ -194,7 +201,7 @@ export default function PostPage({ post }: Props) {
         <label className="mb-5 block">
           <span className="text-gray-500">Comment</span>
           <textarea
-            className="form-input mt-1 block w-full rounded border py-2 px-3 shadow outline-none ring-sky-400 focus:ring"
+            className="my-comment form-input mt-1 block w-full rounded border py-2 px-3 shadow outline-none ring-sky-400 focus:ring"
             rows={8}
             disabled={!isObject(user)}
             placeholder={
@@ -211,11 +218,8 @@ export default function PostPage({ post }: Props) {
         ></input>
       </form>
 
-      {post.comments.map((comment) => (
-        <div>
-          {comment.name} - {comment.comment}
-        </div>
-      ))}
+      <CommentSection comments={post.comments} user={user} />
+
       <Footer />
     </main>
   )

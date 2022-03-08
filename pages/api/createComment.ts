@@ -15,7 +15,7 @@ export default async function createComment(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { post, comment, parent } = JSON.parse(req.body)
+  const { post, comment, parent, name, email, imageUrl } = JSON.parse(req.body)
 
   try {
     await client.create({
@@ -25,6 +25,9 @@ export default async function createComment(
         _ref: post,
       },
       comment,
+      name,
+      imageUrl,
+      email,
       parent: {
         _type: 'reference',
         _ref: parent || undefined,
