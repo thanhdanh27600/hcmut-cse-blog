@@ -83,9 +83,13 @@ interface Props {
 export default function PostPage({ post }: Props) {
   const [user, setUser] = useState<User>()
   const [error, setError] = useState<any>()
+  const [loading, setLoading] = useState<boolean>(false)
+
+  console.log(post)
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    event.currentTarget.reset()
     const commentEle = event.currentTarget.querySelector('.my-comment') as any
 
     if (!commentEle || !user) return
@@ -100,6 +104,8 @@ export default function PostPage({ post }: Props) {
     }
 
     const { comment, parent, name, email, imageUrl } = data
+
+    setLoading(true)
 
     try {
       const res = await client.create({
@@ -117,24 +123,16 @@ export default function PostPage({ post }: Props) {
           _ref: parent || undefined,
         },
       })
+      if (res) {
+        window.alert('Thành công. Câu hỏi sẽ được hiển thị sau khi duyệt')
+        setLoading(false)
+      }
       // console.log(res)
     } catch (err) {
       console.log('ERROR:', err)
-      return
-    }
 
-    // fetch('/api/createComment', {
-    //   method: 'POST',
-    //   body: JSON.stringify(data),
-    // })
-    //   .then((res) => {
-    //     window.alert('Thành công. Câu hỏi sẽ được hiển thị sau khi duyệt')
-    //     comment.value = ''
-    //     // console.log(res)
-    //   })
-    //   .catch((err) => {
-    //     console.log(err)
-    //   })
+      setLoading(false)
+    }
   }
 
   return (
@@ -225,7 +223,7 @@ export default function PostPage({ post }: Props) {
           <textarea
             className="my-comment form-input mt-1 block w-full rounded border py-2 px-3 shadow outline-none ring-sky-400 focus:ring"
             rows={8}
-            disabled={!isObject(user)}
+            disabled={!isObject(user) || loading}
             placeholder={
               isObject(user)
                 ? 'Enter your comment'
@@ -235,12 +233,12 @@ export default function PostPage({ post }: Props) {
         </label>
         <input
           type="submit"
-          className="cursor-pointer rounded bg-sky-500 py-2 px-4 font-bold text-white shadow hover:bg-sky-400 focus:shadow-sm focus:outline-none"
-          disabled={!isObject(user)}
+          className="cursor-pointer rounded bg-sky-500 py-2 px-4 font-bold text-white shadow hover:bg-sky-400 focus:shadow-sm focus:outline-none disabled:cursor-auto disabled:bg-gray-300"
+          disabled={!isObject(user) || loading}
         ></input>
       </form>
 
-      <CommentSection comments={post.comments} user={user} />
+      <CommentSection comments={post.comments} user={user} postId={post._id} />
 
       <Footer />
     </main>
