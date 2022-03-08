@@ -107,7 +107,7 @@ export default function CommentSection(commentSection: CommentSection) {
                 <img
                   className="h-8 rounded-full"
                   src={comment?.parent.imageUrl}
-                  alt={`avatar-${comment?.parent.imageUrl}`}
+                  alt={`avatar-${comment?.parent.email}`}
                 />
               </div>
               <div className="flex w-full translate-y-4 flex-col justify-center">

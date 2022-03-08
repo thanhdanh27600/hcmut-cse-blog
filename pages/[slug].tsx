@@ -84,10 +84,9 @@ export default function PostPage({ post }: Props) {
   const [user, setUser] = useState<User>()
   const [error, setError] = useState<any>()
   const [loading, setLoading] = useState<boolean>(false)
-  
+
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    event.currentTarget.reset()
     const commentEle = event.currentTarget.querySelector('.my-comment') as any
 
     if (!commentEle || !user) return
@@ -104,6 +103,7 @@ export default function PostPage({ post }: Props) {
     const { comment, parent, name, email, imageUrl } = data
 
     setLoading(true)
+    event.currentTarget.reset()
 
     try {
       const res = await client.create({
