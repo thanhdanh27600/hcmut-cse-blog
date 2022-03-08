@@ -18,7 +18,7 @@ export default function CommentSection(commentSection: CommentSection) {
             key={`comment-${comment._id}`}
             data-comment={comment._id}
           >
-            <div className="m-5 w-8">
+            <div className="m-5 min-w-max">
               <img
                 className="h-8 rounded-full"
                 src={comment.imageUrl}
