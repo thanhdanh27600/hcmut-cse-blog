@@ -8,7 +8,7 @@ import { atomOneDark } from 'react-syntax-highlighter/dist/cjs/styles/hljs'
 import CommentSection from '../components/CommentSection'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
-import { sanityClient, urlFor } from '../sanity'
+import { client, urlFor } from '../sanity'
 import { Post, User } from '../typing'
 
 const ImageComponent = ({ value, isInline }: any) => {
@@ -84,35 +84,57 @@ export default function PostPage({ post }: Props) {
   const [user, setUser] = useState<User>()
   const [error, setError] = useState<any>()
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const comment = event.currentTarget.querySelector('.my-comment') as any
+    const commentEle = event.currentTarget.querySelector('.my-comment') as any
 
-    if (!comment || !user) return
-
-    const parent = null
+    if (!commentEle || !user) return
 
     const data = {
       post: post._id,
       name: user.name,
       email: user.email,
       imageUrl: user.imageUrl,
-      comment: comment.value,
-      parent: parent,
+      comment: commentEle.value,
+      parent: undefined,
     }
 
-    fetch('http://localhost:5000/createComment', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    })
-      .then((res) => {
-        window.alert('Thành công. Câu hỏi sẽ được hiển thị sau khi duyệt')
-        comment.value = ''
-        // console.log(res)
+    const { comment, parent, name, email, imageUrl } = data
+
+    try {
+      const res = await client.create({
+        _type: 'comment',
+        post: {
+          _type: 'reference',
+          _ref: post._id,
+        },
+        comment,
+        name,
+        imageUrl,
+        email,
+        parent: {
+          _type: 'reference',
+          _ref: parent || undefined,
+        },
       })
-      .catch((err) => {
-        console.log(err)
-      })
+      // console.log(res)
+    } catch (err) {
+      console.log('ERROR:', err)
+      return
+    }
+
+    // fetch('/api/createComment', {
+    //   method: 'POST',
+    //   body: JSON.stringify(data),
+    // })
+    //   .then((res) => {
+    //     window.alert('Thành công. Câu hỏi sẽ được hiển thị sau khi duyệt')
+    //     comment.value = ''
+    //     // console.log(res)
+    //   })
+    //   .catch((err) => {
+    //     console.log(err)
+    //   })
   }
 
   return (
@@ -233,7 +255,7 @@ export const getStaticPaths = async () => {
   },
   }`
 
-  const posts: [Post] = await sanityClient.fetch(query)
+  const posts: [Post] = await client.fetch(query)
 
   const paths = posts.map((post) => ({
     params: {
@@ -267,7 +289,7 @@ body,
 publishedAt
 }`
 
-  const post = await sanityClient.fetch(query, {
+  const post = await client.fetch(query, {
     slug: params?.slug,
   })
 

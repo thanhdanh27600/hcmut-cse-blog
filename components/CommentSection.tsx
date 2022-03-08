@@ -7,8 +7,6 @@ interface CommentSection {
 }
 
 export default function CommentSection(commentSection: CommentSection) {
-  console.log(commentSection)
-
   return (
     <div className="mx-auto max-w-2xl">
       {commentSection.comments.map((comment) => {

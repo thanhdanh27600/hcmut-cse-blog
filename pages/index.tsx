@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
-import { sanityClient, urlFor } from '../sanity'
+import { client, urlFor } from '../sanity'
 import { Post, User } from '../typing'
 
 interface Props {
@@ -138,7 +138,7 @@ mainImage,
 description
 }`
 
-  const posts = await sanityClient.fetch(query)
+  const posts = await client.fetch(query)
 
   return {
     props: {
