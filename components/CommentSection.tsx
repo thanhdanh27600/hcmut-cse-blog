@@ -1,4 +1,4 @@
-import { MouseEventHandler } from 'react'
+import { MouseEventHandler, useEffect } from 'react'
 import { client } from '../sanity'
 import { Comment, User } from '../typing'
 import { timeAgo } from './utils/time'
@@ -14,6 +14,22 @@ const sortDate = (a: Comment, b: Comment) => {
 }
 
 export default function CommentSection(commentSection: CommentSection) {
+  useEffect(() => {
+    const query = `*[_type=="comment" && post._ref == $postId && approved==true]`
+    const params = { postId: commentSection.postId }
+
+    const subscription = client
+      .listen(query, params, { includeResult: false })
+      .subscribe((update) => {
+        window.alert('New comment published, refresh this page to take effect.')
+        // setComments(update.result)
+      })
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [])
+
   async function handleReplySubmit(event: any) {
     const target = event.target.dataset.replySubmit
     const commentEle = event.target.previousSibling
@@ -103,7 +119,7 @@ export default function CommentSection(commentSection: CommentSection) {
               key={`comment-${comment?.parent._id}`}
               data-comment={comment?.parent._id}
             >
-              <div className="m-5 min-w-max">
+              <div className="m-5 min-w-fit">
                 <img
                   className="h-8 rounded-full"
                   src={comment?.parent.imageUrl}
@@ -134,11 +150,11 @@ export default function CommentSection(commentSection: CommentSection) {
                       key={`comment-${replyComment._id}`}
                       data-comment={replyComment._id}
                     >
-                      <div className="m-2 min-w-max">
+                      <div className="m-2 min-w-fit">
                         <img
                           className="h-8 rounded-full"
                           src={replyComment.imageUrl}
-                          alt={`avatar-${replyComment.imageUrl}`}
+                          alt={`avatar-${replyComment.email}`}
                         />
                       </div>
                       <div className="flex w-full translate-y-4 flex-col justify-center">
