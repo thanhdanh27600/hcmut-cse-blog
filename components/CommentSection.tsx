@@ -55,7 +55,7 @@ export default function CommentSection(commentSection: CommentSection) {
     const replyArea = document.createElement('textarea')
     replyArea.placeholder = 'Your reply'
     replyArea.className =
-      'm-2 p-2 shadow outline-none ring-sky-400 focus:ring w-full'
+      'ml-2 p-2 shadow outline-none ring-sky-400 focus:ring w-[calc(100%-2rem)]'
     replyArea.rows = 3
     replyArea.dataset['replyarea'] = parentId
 

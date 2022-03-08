@@ -13,9 +13,9 @@ function Header({ setUser, user, error, setError }: any) {
   const onSuccess = (res: any) => {
     const currentUser = res.profileObj as User
     if (!currentUser.email.includes('@hcmut.edu.vn')) {
-      // window.alert('Please use HCMUT email')
-      // signOut()
-      // return
+      window.alert('Please use HCMUT email')
+      signOut()
+      return
     }
     setUser(currentUser)
     refreshTokenSetup(res)
